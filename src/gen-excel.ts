@@ -1,20 +1,17 @@
 import xlsx from "node-xlsx";
 import fs from "node:fs";
-import process from "node:process";
 import path from "path";
 import { buildExcelData } from "./buildExcelData";
 import { flattenObject } from "./flattenObject";
 
 const defaultLocale = "zh-CN";
 
-export function genExcel() {
+export function genExcel(inputPath: string, outputPath: string) {
   const messages: Record<string, Record<string, string>> = {};
 
-  const localesDir = fs.readdirSync(path.resolve(process.cwd(), "locales"));
+  const localesDir = fs.readdirSync(path.resolve(inputPath));
   localesDir.forEach((fileName) => {
-    const content = fs.readFileSync(
-      path.resolve(process.cwd(), "locales", fileName)
-    );
+    const content = fs.readFileSync(path.resolve(inputPath, fileName));
     const json = JSON.parse(content.toString());
     const baseName = path.basename(fileName, ".json");
     messages[baseName] = flattenObject(json);
@@ -24,7 +21,7 @@ export function genExcel() {
   const buffer = xlsx.build([
     { name: "sheet 1", data: excelData, options: {} },
   ]);
-  fs.writeFileSync(path.resolve(process.cwd(), "locales.xlsx"), buffer);
+  fs.writeFileSync(path.resolve(outputPath), buffer);
 }
 
-genExcel();
+genExcel("./locales", "./locales.xlsx");
