@@ -18,7 +18,8 @@ import { setProperty } from "dot-prop";
  */
 export function makeI18nMessagesMap(
   data: string[][],
-  columnIndexLocaleMap: Record<number, string>
+  columnIndexLocaleMap: Record<number, string>,
+  flatten = false
 ): Record<string, Record<string, string>> {
   const output: Record<string, Record<string, string>> = {};
   data.forEach((col) => {
@@ -28,7 +29,9 @@ export function makeI18nMessagesMap(
       if (!output[locale]) {
         output[locale] = {};
       }
-      const json = setProperty(output[locale], id, msg);
+      const json = flatten
+        ? { ...output[locale], [id]: msg }
+        : setProperty(output[locale], id, msg);
       output[locale] = json;
     });
   });
