@@ -12,18 +12,31 @@ describe("makeI18nMessagesMap", () => {
             "请输入用户名",
             "Please input your username",
           ],
+          ["register.username.label", "用户名", "username"],
         ],
         { 1: "zh-CN", 2: "en-US" }
       )
     ).toEqual({
       "zh-CN": {
-        login: { username: { label: "用户名", placeholder: "请输入用户名" } },
+        login: {
+          username: { label: "用户名", placeholder: "请输入用户名" },
+        },
+        register: {
+          username: {
+            label: "用户名",
+          },
+        },
       },
       "en-US": {
         login: {
           username: {
             label: "username",
             placeholder: "Please input your username",
+          },
+        },
+        register: {
+          username: {
+            label: "username",
           },
         },
       },
@@ -40,6 +53,7 @@ describe("makeI18nMessagesMap", () => {
             "请输入用户名",
             "Please input your username",
           ],
+          ["register.username.label", "用户名", "username"],
         ],
         { 1: "zh-CN", 2: "en-US" },
         true
@@ -48,10 +62,12 @@ describe("makeI18nMessagesMap", () => {
       "zh-CN": {
         "login.username.label": "用户名",
         "login.username.placeholder": "请输入用户名",
+        "register.username.label": "用户名",
       },
       "en-US": {
         "login.username.label": "username",
         "login.username.placeholder": "Please input your username",
+        "register.username.label": "username",
       },
     });
   });
