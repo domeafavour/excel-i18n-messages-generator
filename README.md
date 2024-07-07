@@ -12,6 +12,8 @@ pnpm install
 
 ## Usage
 
+### Generate locale json files
+
 ```bash
 pnpm gen-locales
 ```
@@ -69,7 +71,13 @@ output:
 }
 ```
 
+### Generate excel file
+
+```bash
+pnpm gen-excel
+```
+
 ## Todo
 
 - [ ] nested/flat style
-- [ ] gen-excel
+- [x] gen-excel

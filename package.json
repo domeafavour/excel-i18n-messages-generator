@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest",
     "gen-locales": "tsx src/gen-locales.ts",
+    "gen-excel": "tsx src/gen-excel.ts",
     "start": "tsx src/index.ts"
   },
   "keywords": [],
