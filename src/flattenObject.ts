@@ -1,13 +1,19 @@
-import { deepKeys, getProperty } from "dot-prop";
-
-export function flattenObject<T extends Record<string, string>>(
-  obj: T
+export function flattenObject(
+  obj: Record<string, any>,
+  prefix = ""
 ): Record<string, string> {
-  return deepKeys(obj).reduce(
-    (acc, key) => {
-      acc[key] = getProperty(obj, key) ?? "";
-      return acc;
-    },
-    {} as Record<string, string>
-  );
+  const result: Record<string, string> = {};
+
+  for (const key in obj) {
+    const value = obj[key];
+    const newKey = prefix ? `${prefix}.${key}` : key;
+
+    if (typeof value === "object") {
+      Object.assign(result, flattenObject(value, newKey));
+    } else {
+      result[newKey] = value;
+    }
+  }
+
+  return result;
 }
