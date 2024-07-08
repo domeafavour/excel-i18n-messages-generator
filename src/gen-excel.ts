@@ -11,6 +11,10 @@ export function genExcel(inputPath: string, outputPath: string) {
 
   const localesDir = fs.readdirSync(path.resolve(inputPath));
   localesDir.forEach((fileName) => {
+    if (path.extname(fileName) !== ".json") {
+      return;
+    }
+
     const content = fs.readFileSync(path.resolve(inputPath, fileName));
     const json = JSON.parse(content.toString());
     const baseName = path.basename(fileName, ".json");
