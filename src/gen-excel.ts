@@ -3,10 +3,13 @@ import fs from "node:fs";
 import path from "path";
 import { buildExcelData } from "./buildExcelData";
 import { flattenObject } from "./flattenObject";
+import { Command } from "commander";
 
-const defaultLocale = "zh-CN";
-
-export function genExcel(inputPath: string, outputPath: string) {
+export function genExcel(
+  inputPath: string,
+  outputPath: string,
+  defaultLocale = "zh-CN"
+) {
   const messages: Record<string, Record<string, string>> = {};
 
   const localesDir = fs.readdirSync(path.resolve(inputPath));
@@ -28,4 +31,18 @@ export function genExcel(inputPath: string, outputPath: string) {
   fs.writeFileSync(path.resolve(outputPath), buffer);
 }
 
-genExcel("./locales", "./locales.xlsx");
+const program = new Command();
+
+program
+  .name("gen excel")
+  .description("Generate an excel from locale json files")
+  .description("input file path")
+  .argument("<inputPath>")
+  .description("output file path")
+  .argument("<outputPath>")
+  .option("-d, --default-locale", "Default locale")
+  .action((inputPath: string, outputPath: string) => {
+    genExcel(inputPath, outputPath);
+  });
+
+program.parse(process.argv);

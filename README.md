@@ -15,7 +15,7 @@ pnpm install
 ### Generate locale json files
 
 ```bash
-pnpm gen-locales
+pnpm gen-locales <inputPath> <outputPath> [-f]
 ```
 
 output:
@@ -74,7 +74,7 @@ output:
 ### Generate excel file
 
 ```bash
-pnpm gen-excel
+pnpm gen-excel <inputPath> <outputPath> [-d]
 ```
 
 ## Todo
