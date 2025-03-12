@@ -1,4 +1,5 @@
 import { defineMiddleware } from "../defineMiddleware";
+import { findReactComponentDeclarations } from "../utils/findReactComponentDeclarations";
 import { genMessageKey } from "../utils/genMessageKey";
 import { getNodePaths } from "../utils/getNodePaths";
 import { isCallExpressionNodePath } from "../utils/isCallExpressionNodePath";
@@ -10,60 +11,53 @@ export const jsonSchemaMiddleware = defineMiddleware(
     const root = j(source);
 
     // find function declarations with pascal case names
-    root
-      .find(j.FunctionDeclaration, {
-        id: {
-          name: (value) => /^[A-Z]/.test(value),
-        },
-      })
-      .forEach((path) => {
-        // find json schema object
-        j(path)
-          .find(j.ObjectExpression, {
-            properties: [
-              {
-                key: {
-                  name: "type",
-                },
-                value: {
-                  value: "object",
-                },
+    findReactComponentDeclarations(root).forEach((path) => {
+      // find json schema object
+      j(path)
+        .find(j.ObjectExpression, {
+          properties: [
+            {
+              key: {
+                name: "type",
               },
-              {
-                key: {
-                  name: "properties",
-                },
+              value: {
+                value: "object",
               },
-            ],
-          })
-          .forEach((schemaPath) => {
-            j(schemaPath)
-              .find(j.Literal)
-              .replaceWith((literalPath) => {
-                const { value } = literalPath.node;
-                if (typeof value === "string") {
-                  const messageKey = genMessageKey(
-                    getNodePaths(literalPath).filter(
-                      (p) =>
-                        !isHtmlTagNodePath(p) && !isCallExpressionNodePath(p)
-                    )
+            },
+            {
+              key: {
+                name: "properties",
+              },
+            },
+          ],
+        })
+        .forEach((schemaPath) => {
+          j(schemaPath)
+            .find(j.Literal)
+            .replaceWith((literalPath) => {
+              const { value } = literalPath.node;
+              if (typeof value === "string") {
+                const messageKey = genMessageKey(
+                  getNodePaths(literalPath).filter(
+                    (p) => !isHtmlTagNodePath(p) && !isCallExpressionNodePath(p)
+                  )
+                );
+                const shouldReplace =
+                  /(\.title|\.description|\.placeholder(\.\d)?)$/.test(
+                    messageKey
                   );
-                  const shouldReplace =
-                    /(\.title|\.description|\.placeholder(\.\d)?)$/.test(
-                      messageKey
-                    );
-                  if (shouldReplace) {
-                    values[messageKey] = value;
-                    return j.callExpression(j.identifier("t"), [
-                      j.stringLiteral(messageKey),
-                    ]);
-                  }
-                  return j.stringLiteral(value);
+                if (shouldReplace) {
+                  values[messageKey] = value;
+                  return j.callExpression(j.identifier("t"), [
+                    j.stringLiteral(messageKey),
+                  ]);
                 }
-                return literalPath;
-              });
-          });
-      });
+                return j.stringLiteral(value);
+              }
+              return literalPath;
+            });
+        });
+    });
 
     return [root.toSource(), values];
   }
