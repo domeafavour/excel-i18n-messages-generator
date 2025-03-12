@@ -14,7 +14,25 @@ export function getNodePaths<T extends ASTPath<any>>(p: T) {
     // if pa is an `ArrayExpression`, we need to get the index
     if (pa.value.type === "ArrayExpression") {
       const index = pa.value.elements.indexOf(p.value);
-      paths.unshift({ type: pa.value.type, name: index.toString() });
+      paths.unshift({ type: "ArrayItem", name: index.toString() });
+    }
+
+    if (pa.value.type === "JSXAttribute") {
+      paths.unshift({ type: "JSXAttribute", name: pa.value.name.name });
+    }
+
+    // console.log("pa.value.type", pa.value.type);
+    // console.log("===");
+
+    if (pa.value.type === "CallExpression") {
+      paths.unshift({ type: "CallExpression", name: pa.value.callee.name });
+    }
+
+    if (pa.value.type === "JSXElement") {
+      paths.unshift({
+        type: "JSXElement",
+        name: pa.value.openingElement.name.name,
+      });
     }
 
     if (pa.value.id) {
