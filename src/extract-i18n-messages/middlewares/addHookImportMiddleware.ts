@@ -1,22 +1,22 @@
 import { defineMiddleware } from "../defineMiddleware";
 
 export const addHookImportMiddleware = defineMiddleware(
-  (source, values, api) => {
-    const j = api(source);
+  (source, values, { j }) => {
+    const root = j(source);
 
-    const hooksImport = api.importDeclaration(
-      [api.importSpecifier(api.identifier("useTranslation"))],
-      api.literal("react-i18next")
+    const hooksImport = j.importDeclaration(
+      [j.importSpecifier(j.identifier("useTranslation"))],
+      j.literal("react-i18next")
     );
 
-    const hooksImportExists = j.find(api.ImportDeclaration, {
+    const hooksImportExists = root.find(j.ImportDeclaration, {
       source: { value: "react-i18next" },
     }).length;
 
     if (!hooksImportExists) {
-      j.find(api.Program).get("body", 0).insertBefore(hooksImport);
+      root.find(j.Program).get("body", 0).insertBefore(hooksImport);
     }
 
-    return [j.toSource(), values];
+    return [root.toSource(), values];
   }
 );

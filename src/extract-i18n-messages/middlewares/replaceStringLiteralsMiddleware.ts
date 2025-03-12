@@ -4,11 +4,11 @@ import { getNodePaths } from "../utils/getNodePaths";
 import { isComponentFunction } from "../utils/isComponentFunction";
 
 export const replaceStringLiteralsMiddleware = defineMiddleware(
-  (source, previousValues, api) => {
-    const j = api(source);
-    const values: I18nMessages = {};
+  (source, previousValues, { j }) => {
+    const root = j(source);
+    const values: I18nMessages = { ...previousValues };
 
-    j.find(api.Literal).replaceWith((path) => {
+    root.find(j.Literal).replaceWith((path) => {
       const { value } = path.node;
 
       if (typeof value === "string") {
@@ -18,14 +18,12 @@ export const replaceStringLiteralsMiddleware = defineMiddleware(
         if (paths.length > 1 && paths[0] && isComponentFunction(paths[0])) {
           const key = paths.map((n) => n.name).join(".");
           values[key] = value;
-          return api.callExpression(api.identifier("t"), [
-            api.stringLiteral(key),
-          ]);
+          return j.callExpression(j.identifier("t"), [j.stringLiteral(key)]);
         }
       }
       return path.value;
     });
 
-    return [j.toSource(), { ...previousValues, ...values }];
+    return [root.toSource(), values];
   }
 );
