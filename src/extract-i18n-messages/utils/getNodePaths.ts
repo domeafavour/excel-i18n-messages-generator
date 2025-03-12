@@ -1,44 +1,49 @@
 import { ASTPath } from "jscodeshift";
 import { NodePath } from "../typings";
 
-export function getNodePaths<T extends ASTPath<any>>(p: T) {
+export function getNodePaths<T extends ASTPath<any>>(_p: T) {
   let paths: NodePath[] = [];
 
-  let pa = p.parent;
-  while (pa) {
+  let current = _p;
+  let parent = current.parent;
+  while (parent) {
     // if pa is a `Property`, we need to get the key name
-    if (pa.value.type === "Property") {
-      paths.unshift({ type: pa.value.key.type, name: pa.value.key.name });
+    if (parent.value.type === "Property") {
+      paths.unshift({
+        type: parent.value.key.type,
+        name: parent.value.key.name,
+      });
     }
 
     // if pa is an `ArrayExpression`, we need to get the index
-    if (pa.value.type === "ArrayExpression") {
-      const index = pa.value.elements.indexOf(p.value);
+    if (parent.value.type === "ArrayExpression") {
+      const index = parent.value.elements.indexOf(current.value);
       paths.unshift({ type: "ArrayItem", name: index.toString() });
     }
 
-    if (pa.value.type === "JSXAttribute") {
-      paths.unshift({ type: "JSXAttribute", name: pa.value.name.name });
+    if (parent.value.type === "JSXAttribute") {
+      paths.unshift({ type: "JSXAttribute", name: parent.value.name.name });
     }
 
     // console.log("pa.value.type", pa.value.type);
     // console.log("===");
 
-    if (pa.value.type === "CallExpression") {
-      paths.unshift({ type: "CallExpression", name: pa.value.callee.name });
+    if (parent.value.type === "CallExpression") {
+      paths.unshift({ type: "CallExpression", name: parent.value.callee.name });
     }
 
-    if (pa.value.type === "JSXElement") {
+    if (parent.value.type === "JSXElement") {
       paths.unshift({
         type: "JSXElement",
-        name: pa.value.openingElement.name.name,
+        name: parent.value.openingElement.name.name,
       });
     }
 
-    if (pa.value.id) {
-      paths.unshift({ type: pa.value.type, name: pa.value.id.name });
+    if (parent.value.id) {
+      paths.unshift({ type: parent.value.type, name: parent.value.id.name });
     }
-    pa = pa.parent;
+    current = parent;
+    parent = parent.parent;
   }
   return paths;
 }
