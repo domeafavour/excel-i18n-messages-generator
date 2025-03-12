@@ -1,8 +1,5 @@
-import { ASTPath } from "jscodeshift";
-import { getNodePaths } from "./getNodePaths";
+import { NodePath } from "../typings";
 
-export function genMessageKey<T extends ASTPath<any>>(p: T) {
-  return getNodePaths(p)
-    .map((p) => p.name)
-    .join(".");
+export function genMessageKey<T extends NodePath>(paths: T[]) {
+  return paths.map((p) => p.name).join(".");
 }
