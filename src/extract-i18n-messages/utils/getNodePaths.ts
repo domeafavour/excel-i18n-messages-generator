@@ -35,6 +35,7 @@ export function getNodePaths<T extends ASTPath<any>>(_p: T) {
     if (parent.value.type === "JSXElement") {
       paths.unshift({
         type: "JSXElement",
+        // TOD: append \${props.key} to the name if `key` is on the JSXElement
         name: parent.value.openingElement.name.name,
       });
     }
