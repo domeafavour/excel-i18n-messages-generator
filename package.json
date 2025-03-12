@@ -9,7 +9,8 @@
     "gen-excel": "tsx src/gen-excel.ts",
     "diff-locale": "tsx src/diff-locale.ts",
     "merge-locales": "tsx src/merge-locales.ts",
-    "merge-excel": "tsx src/merge-excel.ts"
+    "merge-excel": "tsx src/merge-excel.ts",
+    "extract-i18n-messages": "tsx src/extract-i18n-messages.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +19,10 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@types/fs-extra": "^11.0.4",
+    "@types/jscodeshift": "^0.12.0",
     "@types/node": "^20.14.10",
     "commander": "^12.1.0",
+    "jscodeshift": "^17.1.2",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },
