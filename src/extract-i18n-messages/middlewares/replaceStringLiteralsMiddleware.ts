@@ -13,9 +13,9 @@ export const replaceStringLiteralsMiddleware = defineMiddleware(
 
       if (typeof value === "string") {
         const paths = getNodePaths(path);
-        // find the closest ObjectProperty
 
-        if (paths.length > 1 && paths[0] && isComponentFunction(paths[0])) {
+        // string variable declaration in a component
+        if (paths.length === 2 && paths[0] && isComponentFunction(paths[0])) {
           const key = paths.map((n) => n.name).join(".");
           values[key] = value;
           return j.callExpression(j.identifier("t"), [j.stringLiteral(key)]);

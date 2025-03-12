@@ -49,7 +49,7 @@ describe("replaceStringLiteralsMiddleware.test", () => {
     expect(newCode).toBe(expected);
   });
 
-  it("should replace string literals that are object values", () => {
+  it("should not replace string literals that are object values", () => {
     const code = `
       export function Text() {
         const obj = { defaultText: "hello world" };
@@ -58,25 +58,8 @@ describe("replaceStringLiteralsMiddleware.test", () => {
     `;
     const expected = `
       export function Text() {
-        const obj = { defaultText: t("Text.obj.defaultText") };
+        const obj = { defaultText: "hello world" };
         return <span>{obj.defaultText}</span>;
-      }
-    `;
-    const [newCode] = applyMiddlewares(code, [replaceStringLiteralsMiddleware]);
-    expect(newCode).toBe(expected);
-  });
-
-  it("should replace string literals that are in array", () => {
-    const code = `
-      export function Text() {
-        const messages = ["hello", "world"];
-        return <span>{messages[0]}</span>;
-      }
-    `;
-    const expected = `
-      export function Text() {
-        const messages = [t("Text.messages.0"), t("Text.messages.1")];
-        return <span>{messages[0]}</span>;
       }
     `;
     const [newCode] = applyMiddlewares(code, [replaceStringLiteralsMiddleware]);
