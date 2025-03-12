@@ -200,6 +200,5 @@ describe("jsonSchemaMiddleware.test", () => {
 
     const [actual, values] = applyMiddlewares(code, [jsonSchemaMiddleware]);
     expect(actual).toBe(expected);
-    console.log(values)
   });
 });

@@ -11,7 +11,7 @@ export const jsonSchemaMiddleware = defineMiddleware(
     const root = j(source);
 
     // find function declarations with pascal case names
-    findReactComponentDeclarations(root).forEach((path) => {
+    findReactComponentDeclarations(root, j).forEach((path) => {
       // find json schema object
       j(path)
         .find(j.ObjectExpression, {
