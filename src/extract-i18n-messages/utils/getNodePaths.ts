@@ -1,4 +1,4 @@
-import { ASTPath } from "jscodeshift";
+import { ASTPath, ExpressionStatement } from "jscodeshift";
 import { NodePath } from "../typings";
 
 export function getNodePaths<T extends ASTPath<any>>(_p: T) {
@@ -39,6 +39,29 @@ export function getNodePaths<T extends ASTPath<any>>(_p: T) {
         name: parent.value.openingElement.name.name,
       });
     }
+
+    if (parent.value.type === "MemberExpression") {
+      paths.unshift({
+        type: "MemberExpression",
+        name: parent.value.property.name,
+      });
+    }
+
+    if (parent.value.type === "ExpressionStatement") {
+      // (parent.value as ExpressionStatement).expression.type === 'CallExpression' ? parent.va
+      // console.log('parent.value.expression', parent.value.expression)
+      // console.log(parent.value.expression);
+      // console.log("===");
+      paths.unshift({
+        type: "ExpressionStatement",
+        name:
+          parent.value.expression.callee.object.name +
+          "." +
+          parent.value.expression.callee.property.name,
+      });
+    }
+    // console.log(parent.value.type);
+    // console.log("===");
 
     if (parent.value.id) {
       paths.unshift({ type: parent.value.type, name: parent.value.id.name });
