@@ -14,12 +14,14 @@
   "devDependencies": {
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.10",
     "commander": "^12.1.0",
     "tsx": "^4.16.2",
     "typescript": "^5.5.3"
   },
   "dependencies": {
+    "fs-extra": "^11.3.0",
     "dot-prop": "^9.0.0",
     "node-xlsx": "^0.24.0",
     "vitest": "^1.6.0"
