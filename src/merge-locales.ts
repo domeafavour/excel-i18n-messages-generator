@@ -10,7 +10,7 @@ program
   .argument("<sourcePath>")
   .argument("<updatesPath>")
   .argument("[outputPath]")
-  .action((sourcePath: string, updatesPath: string, outputPath: string) => {
+  .action((sourcePath: string, updatesPath: string, outputPath?: string) => {
     const newLocale = mergeLocales(readJSON(sourcePath), readJSON(updatesPath));
     writeJSON(outputPath || sourcePath, newLocale);
     console.log("SUCCESS");
