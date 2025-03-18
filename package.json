@@ -7,7 +7,8 @@
     "test": "vitest",
     "gen-locales": "tsx src/gen-locales.ts",
     "gen-excel": "tsx src/gen-excel.ts",
-    "merge-locales": "tsx src/merge-locales.ts"
+    "merge-locales": "tsx src/merge-locales.ts",
+    "merge-excel": "tsx src/merge-excel.ts"
   },
   "keywords": [],
   "author": "",
