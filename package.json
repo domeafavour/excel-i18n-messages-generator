@@ -22,8 +22,9 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "fs-extra": "^11.3.0",
     "dot-prop": "^9.0.0",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.0",
     "node-xlsx": "^0.24.0",
     "vitest": "^1.6.0"
   }
