@@ -7,6 +7,7 @@
     "test": "vitest",
     "gen-locales": "tsx src/gen-locales.ts",
     "gen-excel": "tsx src/gen-excel.ts",
+    "diff-locale": "tsx src/diff-locale.ts",
     "merge-locales": "tsx src/merge-locales.ts",
     "merge-excel": "tsx src/merge-excel.ts"
   },
