@@ -22,7 +22,7 @@ export function mergeLocales<T extends Record<string, any>>(
       continue;
     }
 
-    if (typeof updatedValue === "string") {
+    if (typeof updatedValue === "string" && !!updatedValue.length) {
       result[key] = updatedValue;
       continue;
     }
