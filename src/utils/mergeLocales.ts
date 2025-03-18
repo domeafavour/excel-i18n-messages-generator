@@ -4,7 +4,7 @@ export function mergeLocales<T extends Record<string, any>>(
   source: T,
   updates: T,
   flatten = false
-) {
+): Record<string, any> {
   const sourceKeys = Object.keys(source);
   const allKeys = new Set([...sourceKeys, ...Object.keys(updates)]);
   if (flatten) {
@@ -27,7 +27,7 @@ export function mergeLocales<T extends Record<string, any>>(
       continue;
     }
     if (typeof updatedValue === "object") {
-      if (sourceValue) {
+      if (sourceValue && typeof sourceValue === "object") {
         result[key] = mergeLocales(sourceValue, updatedValue, false);
       } else {
         result[key] = updatedValue;
