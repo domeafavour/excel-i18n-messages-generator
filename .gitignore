@@ -2,3 +2,4 @@
 pnpm-lock.yaml
 locales
 .DS_Store
+**.xlsx
